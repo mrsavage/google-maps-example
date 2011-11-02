@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>google maps api</title>
+    <link rel="stylesheet" media="screen" href="event_map.css">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script type="text/javascript">
+        // arrays to hold copies of the markers and html used by the side_bar 
+        // because the function closure trick doesnt work there 
+        var gmarkers = []; 
+        var side_bar_html = ""; 
+    </script>
+    <script type="text/javascript" src="event_map.js"></script>
+  </head>
+  <body onload="initialize_event_map()">
+    <h1>google maps api</h1>
+    <div id="event_map" style="width:60%; height:80%"></div>
+    <div id="event_sidebar" style="width:20%; height:80%"></div>
+    <div id="foo" style="width:20%; height:80%"></div>
+  </body>
+</html>
