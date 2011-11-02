@@ -17,11 +17,11 @@ function initialize_event_map() {
 
     //Event 1 (Club Vaudeville)
     var point = new google.maps.LatLng(47.55718,9.70659);
-    var marker = createMarker(map, point,"Depeche Mode Party","Club Vaudeville proudly presents: enjoy the mode")
+    var marker = createMarker(map, point,"Depeche Mode Party","Club Vaudeville proudly presents: enjoy the mode", "./events/depeche_mode.html")
 
     //Event 2 (Club Douala)
     var point = new google.maps.LatLng(47.78162,9.60651);
-    var marker = createMarker(map, point,"Party mit den Residents","Im Club Doala <br> Check it out")
+    var marker = createMarker(map, point,"Party mit den Residents","Im Club Doala <br> Check it out", "./events/residents.html")
 
     // put the assembled side_bar_html contents into the side_bar div
    document.getElementById("event_sidebar").innerHTML = side_bar_html;
@@ -44,7 +44,7 @@ function mymouseover(i) {
 }
 
 // A function to create the marker and set up the event window function 
-function createMarker(map, latlng, name, html) {
+function createMarker(map, latlng, name, html, event_link) {
     var contentString = "<h3>" + name + "</h3>" + "<p>" + html + "</p>";
     var marker = new google.maps.Marker({
         position: latlng,
@@ -52,16 +52,22 @@ function createMarker(map, latlng, name, html) {
         title: name,
         //zIndex: Math.round(latlng.lat()*-100000)<<5
         });
+    marker.event_link = event_link;
 
     //show popu with title / description on mouseover
     google.maps.event.addListener(marker, 'mouseover', function() {
         infowindow.setContent(contentString); 
         infowindow.open(map,marker);
         });
+
+    //go to event's detail page on click
+    google.maps.event.addListener(marker, 'click', function() {
+        window.location = event_link;
+        });
     // save the info we need to use later for the side_bar
     gmarkers.push(marker);
     // add a line to the side_bar html
-    side_bar_html += '<a onmouseover="javascript:mymouseover(' + (gmarkers.length-1) + ')" href="javascript:myclick(' + (gmarkers.length-1) + ')">' + name + '<\/a><br>';
+    add_item_to_sidebar(gmarkers.length-1);
 }
 
 function update_sidebar(map){ 
@@ -79,10 +85,13 @@ function update_sidebar(map){
                 var point = gmarkers[j].getPosition(); 
                 if ((point.lat() < NElat) && (point.lat() > SWlat)){ 
                         if ((point.lng() < NElng) && (point.lng() > SWlng)){ 
-                                side_bar_html += '<a onmouseover="javascript:mymouseover(' + j + ')" href="javascript:myclick(' + j + ')">' + gmarkers[j].getTitle() + '<\/a><br>';
+                                add_item_to_sidebar(j);
                         } 
                 } 
         } 
         document.getElementById("event_sidebar").innerHTML = side_bar_html; 
 }
 
+function add_item_to_sidebar(index){
+    side_bar_html += '<a onmouseover="javascript:mymouseover(' + index + ')" href="' + gmarkers[index].event_link + '">' + gmarkers[index].getTitle() + '<\/a><br>';
+}
