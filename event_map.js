@@ -46,10 +46,13 @@ function mymouseover(i) {
 // A function to create the marker and set up the event window function 
 function createMarker(map, latlng, name, html, event_link) {
     var contentString = "<h3>" + name + "</h3>" + "<p>" + html + "</p>";
+    var index = gmarkers.length;
+    var icon_link = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + index + "%7CFF0000%7C000000";
     var marker = new google.maps.Marker({
         position: latlng,
         map: map,
         title: name,
+        icon: icon_link,
         //zIndex: Math.round(latlng.lat()*-100000)<<5
         });
     marker.event_link = event_link;
@@ -67,7 +70,7 @@ function createMarker(map, latlng, name, html, event_link) {
     // save the info we need to use later for the side_bar
     gmarkers.push(marker);
     // add a line to the side_bar html
-    add_item_to_sidebar(gmarkers.length-1);
+    add_item_to_sidebar(index);
 }
 
 function update_sidebar(map){ 
@@ -93,5 +96,5 @@ function update_sidebar(map){
 }
 
 function add_item_to_sidebar(index){
-    side_bar_html += '<a onmouseover="javascript:mymouseover(' + index + ')" href="' + gmarkers[index].event_link + '">' + gmarkers[index].getTitle() + '<\/a><br>';
+    side_bar_html += '<a onmouseover="javascript:mymouseover(' + index + ')" href="' + gmarkers[index].event_link + '">' +' <img src="'+ gmarkers[index].getIcon() + '"/> '+ gmarkers[index].getTitle() + '<\/a><br>';
 }
