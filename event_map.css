@@ -5,3 +5,7 @@
 #event_sidebar {
   display: inline;
 }
+
+.clear{
+    clear: both;
+}
